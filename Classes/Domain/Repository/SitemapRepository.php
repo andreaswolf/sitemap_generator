@@ -280,7 +280,11 @@ class SitemapRepository
     public function getEntriesFromPages($pages)
     {
         foreach ($pages as $page) {
-            if (intval($page['doktype']) === 1) {
+            $doktype = intval($page['doktype']);
+            // include normal pages and all custom doktypes
+            // the core doktypes like shortcuts and mountpoints might need more careful consideration, so we exclude
+            // them for the time being
+            if ($doktype == 1 || ($doktype > 7 && $doktype < 199)) {
                 $urlEntry = new UrlEntry();
 
                 $uri = $this->generatePageUrl($page['uid']);
